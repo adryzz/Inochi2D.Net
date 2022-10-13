@@ -25,8 +25,19 @@
   <PropertyGroup Label="Pre-build task">
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">
       if not exist "$(MSBuildProjectDirectory)\runtimes\win-x64\native\inochi2d-c.dll" (
-          cd $(MSBuildProjectDirectory)\..\
-          dub build --compiler=ldc2 --build=release
+        cd $(MSBuildProjectDirectory)\..\
+      
+        git clone https://github.com/Inochi2D/inochi2d-c.git
+        cd inochi2d-c
+
+        git clone https://github.com/Inochi2D/inochi2d.git
+        dub add-local .\inochi2d "1.0.0"
+
+        dub build --compiler=ldc2 --build=release
+
+        mkdir -p $(MSBuildProjectDirectory)\runtimes\win-x64\native\
+
+        cp out\inochi2d-c.dll $(MSBuildProjectDirectory)\runtimes\win-x64\native\inochi2d-c.dll
       )
     </PreBuildEvent>
     <PreBuildEvent Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' ">
@@ -49,7 +60,18 @@
     <PreBuildEvent Condition=" '$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' ">
       if [ ! -f $(MSBuildProjectDirectory)/runtimes/osx-x64/native/libinochi2d-c.dylib ]; then
         cd $(MSBuildProjectDirectory)/../
+      
+        git clone https://github.com/Inochi2D/inochi2d-c.git
+        cd inochi2d-c
+
+        git clone https://github.com/Inochi2D/inochi2d.git
+        dub add-local ./inochi2d "1.0.0"
+
         dub build --compiler=ldc2 --build=release
+
+        mkdir -p $(MSBuildProjectDirectory)/runtimes/osx-x64/native/
+
+        cp out/libinochi2d-c.dylib $(MSBuildProjectDirectory)/runtimes/osx-x64/native/libinochi2d-c.dylib
       fi
     </PreBuildEvent>
   </PropertyGroup>
