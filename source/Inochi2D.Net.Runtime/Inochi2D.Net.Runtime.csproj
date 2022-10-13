@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Documents">
-    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\inochi2d-c\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
